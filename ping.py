@@ -17,8 +17,18 @@ def ping():
 
     return subprocess.call(command) == 0
 
-
-
+def res_fun():
+    res = ping()
+    ping_get = ping_entry.get()
+    
+    if len(ping_get) > 15:
+        res_label = Label(window,text = 'You have entered a wrong number try again.')
+        sys.exit()
+    
+    if res == True:
+        res_label = Label(window,text = 'The ip is live').grid(row = 3, column = 0)
+    elif res == False:
+        res_label = Label(window,text = 'The ip is dead').grid(row = 3, column = 0)
 
 
 window = Tk()
@@ -26,20 +36,10 @@ window = Tk()
 ping_label = Label(window,text = 'Enter your ip ===>')
 ping_entry = Entry(window)
 submit_btn = Button(window,text = 'Submit',width = 20,height = 3,command = ping)
+res_btn = Button(window,text = 'Press for your result',width = 20, height = 3,command = res_fun).grid(row = 2, column = 0)
 
 ping_label.grid(row = 0, column = 0, padx = 10, pady = 10)
 ping_entry.grid(row = 0, column = 1, padx = 10, pady = 10)
 submit_btn.grid(row = 1, column = 0, padx = 10, pady = 10)
 
-res = ping()
-ping_get = ping_entry.get()
-
-if len(ping_get) > 15:
-    res_label = Label(window,text = 'You have entered a wrong number try again.')
-    sys.exit()
-
-if res == True:
-    res_label = Label(window,text = 'The ip is live').grid(row = 2, column = 0)
-elif res == False:
-    res_label = Label(window,text = 'The ip is dead').grid(row = 2, column = 0)
 window.mainloop()
