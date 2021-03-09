@@ -18,20 +18,31 @@ def ping():
     return subprocess.call(command) == 0
 
 def res_fun():
-    ping_get = ping_entry.get()
+    if r == 2:
+        main_frm = LabelFrame(window).grid(row = 1, column = 0,padx = 10, pady = 10)
+        
+        ping_label = Label(main_frm,text = 'Enter your ip ===>').grid(row = 2, column = 0, padx = 10, pady = 10)
+        ping_entry = Entry(main_frm).grid(row = 2, column = 1, padx = 10, pady = 10)
+        
+        ping_get = ping_entry.get()
+    
+        res = ping()
+    
+        if res == True:
+            messagebox.askquestion('Result','The ip is live.')
+        elif res == False:
+            messagebox.askquestion('Result','The ip is dead.')
+
     if len(ping_get) > 15:
         res_label = Label(window,text = 'You have entered a wrong number try again.')
         sys.exit()
-    res = ping()
-
-    if res == True:
-        messagebox.askquestion('Result','The ip is live.')
-    elif res == False:
-        messagebox.askquestion('Result','The ip is dead.')
-
 
 window = Tk()
 
-Radiobutton(window,text = '1- Check an ip length validity.',variable)
+r = IntVar()
+
+Radiobutton(window,text = '1- Check an ip length validity.',variable = r,value = 1).grid(row = 0, column = 0, pady = 10, padx = 10)
+Radiobutton(window,text = '2- Ping an IP.',variable = r,value = 2).grid(row = 1, column = 0, pady = 10, padx = 10)
+
 
 window.mainloop()
