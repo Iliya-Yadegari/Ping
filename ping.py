@@ -3,50 +3,6 @@ import subprocess  # For executing a shell command
 from tkinter import *
 import sys
 
-def res_fun():
-    if r.get() == 2:
-        main_frm = LabelFrame(window,bg = 'white').grid(row = 3, column = 0,padx = 10, pady = 10)
-        
-        ping_label = Label(main_frm,text = 'Enter your ip ===>',bg = 'yellow')
-        
-        global ping_entry
-        ping_entry = Entry(main_frm)
-        pingSubmit_btn = Button(window,text = 'Submit',command = ping_res,width = 20, height = 3,bg = 'orange')
-    
-        ping_label.grid(row = 3, column = 0, padx = 10, pady = 10)
-        ping_entry.grid(row = 3, column = 1, padx = 10, pady = 10)
-        pingSubmit_btn.grid(row = 4, column = 0, padx = 10, pady = 10)
-
-    elif r.get() == 1:
-        main_frm = LabelFrame(window,bg = 'white').grid(row = 3, column = 0,padx = 10, pady = 10)
-        
-        ping_label = Label(main_frm,text = 'Enter your ip ===>',bg = 'yellow')
-        
-        global ping_ent
-        ping_ent = Entry(main_frm)
-        pingSubmit_btn = Button(window,text = 'Submit',command = ping_check,width = 20, height = 3,bg = 'orange')
-
-        ping_label.grid(row = 3, column = 0, padx = 10, pady = 10)
-        ping_ent.grid(row = 3, column = 1, padx = 10, pady = 10)
-        pingSubmit_btn.grid(row = 4, column = 0, padx = 10, pady = 10)
-
-def ping_check():
-    pingGet = ping_ent.get()
-    
-    if len(pingGet) > 15:
-        messagebox.showinfo('Result','You have entered an incorrect ip')
-    else:
-        messagebox.showinfo('Result','You have entered an correct ip')
-
-def ping_res():
-    res = ping()
-    
-    if res == True:
-        messagebox.showinfo('Result','The ip is live.')
-    elif res == False:
-        messagebox.showinfo('Result','The ip is dead.')
-
-
 def ping():
     """
     Returns True if host (str) responds to a ping request.
@@ -56,7 +12,7 @@ def ping():
     # Option for the number of packets as a function of
     param = '-n' if platform.system().lower()=='windows' else '-c'
 
-    ping_get = ping_entry.get()
+    ping_get = ping_ent.get()
 
     # Building the command. Ex: "ping -c 1 google.com"
     command = ['ping', param, '1', ping_get]
@@ -64,12 +20,42 @@ def ping():
     return subprocess.call(command) == 0
 
 
+def res_fun():
+    if r.get() == 2:
+        res = ping()
+        
+        if res == True:
+            messagebox.showinfo('Result','The ip is live.')
+        elif res == False:
+            messagebox.showinfo('Result','The ip is dead.')
+        
+    elif r.get() == 1:
+
+        pingGet = ping_ent.get()
+        
+        if len(pingGet) > 15:
+            messagebox.showinfo('Result','You have entered an incorrect ip')
+        else:
+            messagebox.showinfo('Result','You have entered an correct ip')
+
 window = Tk()
 
 r = IntVar()
 
-Radiobutton(window,text = '1- Check an ip length validity.',variable = r,value = 1).grid(row = 0, column = 0, pady = 10, padx = 10)
-Radiobutton(window,text = '2- Ping an IP.',variable = r,value = 2).grid(row = 1, column = 0, pady = 10, padx = 10)
+frame_1 = LabelFrame(window,text = 'Options')
+
+Radiobutton(frame_1,text = '1- Check an ip length validity.',variable = r,value = 1).grid(row = 0, column = 0, pady = 10, padx = 10)
+Radiobutton(frame_1,text = '2- Ping an IP.',variable = r,value = 2).grid(row = 1, column = 0, pady = 10, padx = 10)
+
+ping_label = Label(frame_1,text = 'Enter your ip ===>',bg = 'yellow')
+    
+ping_ent = Entry(frame_1)
+    
+ping_label.grid(row = 3, column = 0, padx = 10, pady = 10)
+ping_ent.grid(row = 3, column = 1, padx = 10, pady = 10)
+
 submit_btn = Button(window,text = 'Submit',width = 20, height = 3,command = res_fun,bg = '#00e6e6').grid(row = 2, column = 0, padx = 10,pady = 10)
+
+frame_1.grid(row = 0, column = 0, padx = 10, pady = 10)
 
 window.mainloop()
