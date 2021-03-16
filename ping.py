@@ -1,3 +1,12 @@
+"""
+@author: Hossein Koofi
+@author: Iliya yadegari
+"""
+
+
+
+
+
 import platform    # For getting the operating system name
 import subprocess  # For executing a shell command
 from tkinter import *
@@ -50,6 +59,8 @@ def res_fun():
 
 
 window = Tk()
+window.title("VT Pinger")
+window.iconbitmap("ip.ico")
 
 r = IntVar()
 
